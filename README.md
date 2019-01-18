@@ -4,7 +4,7 @@
 This program provides venue status and recommendation for user
 
 ## Tech Stack
-
+![arch](architecture.png)
 
 ## Business Needs
 Firstly, this program provides user the real-time list on Top Venue for different user groups:
