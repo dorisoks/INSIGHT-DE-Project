@@ -30,7 +30,7 @@ def sendCassandra(iter):
     count = 0
 
     batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
-     for record in iter:
+    for record in iter:
 
         batch.add(insert_statement,(record[1][1], record[1][2], record[1][0], record[1][3],record[1][4], record[1][5]))
 
