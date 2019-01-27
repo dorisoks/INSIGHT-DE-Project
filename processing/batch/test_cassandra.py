@@ -61,7 +61,7 @@ def sendCassandra(iter):
     #batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
     for record in iter:
 
-        batch.add(insert_statement,(record[1][0], record[1][1], record[1][2], record[1][2],record[1][2], record[1][2]))
+        batch.add(insert_statement,(record[1][0],record[1][1],record[1][2],record[1][2],record[1][2],record[1][2]))
 
         count += 1
         # if count % 200== 0:
@@ -76,30 +76,22 @@ def test2(v):
     return (key,(int(v[0]),int(v[1]),int(v[2])))	
 
 def main():
-
-
-
     sc = SparkContext(appName="PythonSparkStreamingKafka")
     sc.setLogLevel("WARN")
 
     # set microbatch interval as 5 seconds, this can be customized according to the project
     ssc = StreamingContext(sc, 1)
     # directly receive the data under a certain topic
-    kafkaStream = KafkaUtils.createDirectStream(ssc, ['ctest'], {"metadata.broker.list": 'ec2-52-32-25-168.us-west-2.compute.amazonaws.com:9092'})
+    kafkaStream = KafkaUtils.createDirectStream(ssc, ['ctest2'], {"metadata.broker.list": 'ec2-52-32-25-168.us-west-2.compute.amazonaws.com:9092'})
     batchdata = kafkaStream.map(lambda x: x[1])
     counts = batchdata.map(lambda line: line.split(',')) # since the input data are csv files, specify the delimeter "," in order to extract the values
     # Processed_data = counts.map(getValue).reduceByKey(lambda a, b: (a[0], a[1], a[2], a[3]+ b[3], a[4]+ b[4], a[5]+ b[5], a[6]+ b[6], a[7]+ b[7], a[8]+ b[8], a[9]+ b[9], a[10]+ b[10], a[11]+ b[11], a[12]+ b[12], a[13]+ b[13], a[14]+ b[14])).map(getAvg)
 
-    Processed_data = counts.map(test2).map(lambda x: (x[1][0], (x[1][0], x[1][1], x[1][2]))).reduceByKey(lambda x,y: (x[0],x[1],x[2]+y[2]))
+    Processed_data = counts.map(test2).map(lambda x: (x[1][0], (x[1][0], x[1][1], x[1][1]))).reduceByKey(lambda x,y: (x[0],x[1],x[1]+y[1]))
 
     Processed_data.pprint()
-    #State_data.pprint()
-    #Recent_data.pprint()
-    #Recent_data.pprint()
 
     Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandra)) # save rdd in different format to different tables
-    # Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandrastate))
-    # Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandrarecent))
 
     ssc.start()
     ssc.awaitTermination()

@@ -44,15 +44,14 @@ from operator import add
 from cassandra.cluster import Cluster
 from cassandra.query import BatchStatement
 from cassandra import ConsistencyLevel
-from cassandra.query import BatchType
+#from cassandra.query import BatchType
 
 
 
 # define functions to save rdds to cassandra
 def sendCassandra(iter):
     print("send to cassandra")
-    cluster = Cluster(['52.32.25.168']) # connect to cassandra
-    #cluster = Cluster(['52.32.25.168', '34.210.238.118', '35.166.115.1', '52.26.170.191']) # connect to cassandra
+    cluster = Cluster(['52.32.25.168', '34.210.238.118', '35.166.115.1', '52.26.170.191']) # connect to cassandra
     session = cluster.connect()
     session.execute('USE ' + "playground") # provide keyspace
     insert_statement = session.prepare("INSERT INTO checkin2 (User_id, Venue_id, Time, Latitude, Longitude, Time_org) VALUES (?,?,?,?,?,?)")

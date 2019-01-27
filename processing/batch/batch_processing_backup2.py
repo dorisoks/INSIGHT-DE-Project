@@ -39,20 +39,20 @@ import json, math, datetime
 from kafka.consumer import SimpleConsumer
 
 from operator import add
-
+"""
 # cassandra
 from cassandra.cluster import Cluster
 from cassandra.query import BatchStatement
 from cassandra import ConsistencyLevel
 from cassandra.query import BatchType
-
-
+"""
+import pyspark_cassandra
+from pyspark_cassandra import streaming
 
 # define functions to save rdds to cassandra
 def sendCassandra(iter):
     print("send to cassandra")
-    cluster = Cluster(['52.32.25.168']) # connect to cassandra
-    #cluster = Cluster(['52.32.25.168', '34.210.238.118', '35.166.115.1', '52.26.170.191']) # connect to cassandra
+    cluster = Cluster(['52.32.25.168', '34.210.238.118', '35.166.115.1', '52.26.170.191']) # connect to cassandra
     session = cluster.connect()
     session.execute('USE ' + "playground") # provide keyspace
     insert_statement = session.prepare("INSERT INTO checkin2 (User_id, Venue_id, Time, Latitude, Longitude, Time_org) VALUES (?,?,?,?,?,?)")
@@ -90,16 +90,18 @@ def main():
     counts = batchdata.map(lambda line: line.split(',')) # since the input data are csv files, specify the delimeter "," in order to extract the values
     # Processed_data = counts.map(getValue).reduceByKey(lambda a, b: (a[0], a[1], a[2], a[3]+ b[3], a[4]+ b[4], a[5]+ b[5], a[6]+ b[6], a[7]+ b[7], a[8]+ b[8], a[9]+ b[9], a[10]+ b[10], a[11]+ b[11], a[12]+ b[12], a[13]+ b[13], a[14]+ b[14])).map(getAvg)
 
-    Processed_data = counts.map(test2).map(lambda x: (x[1][0], (x[1][0], x[1][1], x[1][2]))).reduceByKey(lambda x,y: (x[0],x[1],x[2]+y[2]))
+    Processed_data = counts.map(test2).map(lambda x: (x[1][0]))
 
     Processed_data.pprint()
     #State_data.pprint()
     #Recent_data.pprint()
     #Recent_data.pprint()
 
-    Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandra)) # save rdd in different format to different tables
+    #  Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandra)) # save rdd in different format to different tables
     # Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandrastate))
     # Processed_data.foreachRDD(lambda rdd: rdd.foreachPartition(sendCassandrarecent))
+
+    Processed_data.saveToCassandra("playground", "checkin3")
 
     ssc.start()
     ssc.awaitTermination()
