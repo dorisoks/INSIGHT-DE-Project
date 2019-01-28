@@ -4,7 +4,7 @@ from time import gmtime, strftime
 
 
 def main():
-    producer = KafkaProducer(bootstrap_servers='ec2-52-32-25-168.us-west-2.compute.amazonaws.com:9092')
+    producer = KafkaProducer(bootstrap_servers='ec2-52-89-145-137.us-west-2.compute.amazonaws.com:9092')
     
     file_address = "/home/ubuntu/input.txt"
 
@@ -12,9 +12,10 @@ def main():
     with open(file_address) as f:
         for line in f:
             curtime = strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-            new_line = line + "," + curtime
+            new_line = line 
+            #new_line = line + "," + curtime
 	    if new_line[0] != "":
-                producer.send("ctest2", new_line)
+                producer.send("ctest", new_line)
                 count += 1
 	    print("now it is sending... " + new_line)
     producer.flush()

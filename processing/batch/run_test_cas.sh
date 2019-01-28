@@ -5,4 +5,4 @@
 --executor-memory 2G \
 --conf spark.scheduler.mode=FAIR \
 --conf spark.default.parallelism=2 \
-~/INSIGHT-DE-Project/processing/batch/batch_processing.py
+~/INSIGHT-DE-Project/processing/batch/test_cassandra.py

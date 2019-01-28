@@ -1,4 +1,4 @@
-"""
+
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 from pyspark import SparkContext
@@ -44,24 +44,24 @@ from operator import add
 from cassandra.cluster import Cluster
 from cassandra.query import BatchStatement
 from cassandra import ConsistencyLevel
-from cassandra.query import BatchType
-
+#from cassandra.query import BatchType
+"""
 
 
 # define functions to save rdds to cassandra
+print "start"
 def sendCassandra(iter):
     print("send to cassandra")
-    cluster = Cluster(['52.89.145.137']) # connect to cassandra
+    cluster = Cluster(['52.89.145.137', '34.215.131.12', '54.69.16.194', '34.218.174.169']) # connect to cassandra
     session = cluster.connect()
     session.execute('USE ' + "playground") # provide keyspace
-    insert_statement = session.prepare("INSERT INTO test1 (User_id, Venue_id, Time) VALUES (?,?,?)")
-    #insert_statement = session.prepare("INSERT INTO test1 (User_id, Venue_id, Time, Latitude, Longitude, Time_org) VALUES (?,?,?,?,?,?)")
+    insert_statement = session.prepare("INSERT INTO checkin2 (User_id, Venue_id, Time, Latitude, Longitude, Time_org) VALUES (?,?,?,?,?,?)")
     count = 0
-    batch = BatchStatement( batch_type=BatchType.COUNTER)
-    #batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
+  #  batch = BatchStatement( batch_type=BatchType.COUNTER)
+    batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
     for record in iter:
 
-        batch.add(insert_statement,(record[1][0], record[1][1], record[1][2]))
+        batch.add(insert_statement,(record[1][0], record[1][1], record[1][2], record[1][2],record[1][2], record[1][2]))
 
         count += 1
         # if count % 200== 0:

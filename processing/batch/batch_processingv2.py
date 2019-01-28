@@ -58,8 +58,8 @@ def sendCassandra(iter):
     session.execute('USE ' + "playground") # provide keyspace
     insert_statement = session.prepare("INSERT INTO checkin2 (User_id, Venue_id, Time, Latitude, Longitude, Time_org) VALUES (?,?,?,?,?,?)")
     count = 0
-    batch = BatchStatement( batch_type=BatchType.COUNTER)
-    #batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
+  #  batch = BatchStatement( batch_type=BatchType.COUNTER)
+    batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
     for record in iter:
 
         batch.add(insert_statement,(record[1][0], record[1][1], record[1][2], record[1][2],record[1][2], record[1][2]))
