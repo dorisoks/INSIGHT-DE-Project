@@ -1,4 +1,4 @@
-/usr/local/spark/bin/spark-submit --master spark://ec2-52-89-145-137.us-west-2.compute.amazonaws.com:7077 \
+/usr/local/spark/bin/spark-submit --master spark://ec2-52-88-251-94.us-west-2.compute.amazonaws.com:7077 \
 --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.2 \
 --num-executors 4 \
 --executor-cores 3 \

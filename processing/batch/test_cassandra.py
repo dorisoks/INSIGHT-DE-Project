@@ -15,7 +15,7 @@ from cassandra.query import BatchType
 
 # define functions to save rdds to cassandra
 print("send to cassandra")
-cluster = Cluster(['52.89.145.137'], control_connection_timeout=None,  port=9042) # connect to cassandra
+cluster = Cluster(['52.88.251.94'], control_connection_timeout=None,  port=9042) # connect to cassandra
 session = cluster.connect()
 session.execute('USE ' + "playground") # provide keyspace
 insert_statement = session.prepare("INSERT INTO checkin1 (User_id, Venue_id, Time) VALUES (?,?,?)")
