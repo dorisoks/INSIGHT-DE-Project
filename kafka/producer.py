@@ -4,7 +4,7 @@ from time import gmtime, strftime
 
 
 def main():
-    producer = KafkaProducer(bootstrap_servers='ec2-52-89-145-137.us-west-2.compute.amazonaws.com:9092')
+    producer = KafkaProducer(bootstrap_servers='ec2-52-88-251-94.us-west-2.compute.amazonaws.com:9092')
     
     file_address = "/home/ubuntu/input.txt"
 

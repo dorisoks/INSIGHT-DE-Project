@@ -1,0 +1,3 @@
+CASSANDRA_SERVER =  ['52.88.251.94']
+
+CASSANDRA_NAMESPACE = "playground"
