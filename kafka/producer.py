@@ -6,9 +6,10 @@ from time import gmtime, strftime
 def main():
     producer = KafkaProducer(bootstrap_servers='ec2-52-88-251-94.us-west-2.compute.amazonaws.com:9092')
     
-    file_address = "/home/ubuntu/input.txt"
+    file_address = "/home/ubuntu/checkins_sf.txt"
 
     count = 0
+    start = time.time()
     with open(file_address) as f:
         for line in f:
             curtime = strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
@@ -19,6 +20,7 @@ def main():
                 count += 1
 	    print("now it is sending... " + new_line)
     producer.flush()
+    print( time.time()-start)
     f.close()
 
 if __name__ == "__main__":
