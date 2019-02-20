@@ -42,14 +42,8 @@ if __name__ == "__main__":
  
         df_soc.show(20)
         df_rating.show(20)
-       	#sql_sc = SQLContext(sc)
-        #re = sql_sc.read\
-        #.format("org.apache.spark.sql.cassandra")\
-       # .options(table="venue_visit", keyspace="playground")\
-        #.load()
-
-       # df_soc.repartition(2000, 'friend_id')
-       # df_rating.repartition(2000, 'friend_id')
+        df_soc.repartition(10000, 'friend_id')
+        df_rating.repartition(10000, 'friend_id')
 
 	df_join = df_soc.join(df_rating, on = 'friend_id')
         df_join.show(20)  

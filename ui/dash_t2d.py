@@ -1,6 +1,6 @@
 import dash
-#from dash.dependencies import Input, Output, State
-from dash.dependencies import Input, Output, State, Event
+from dash.dependencies import Input, Output, State
+#from dash.dependencies import Input, Output, State, Event
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.plotly as py
@@ -94,17 +94,6 @@ def update_graph(interval):
 	venue_lat.append(venue.latitude)
 	venue_lon.append(venue.longitude)
 
-    # to get fixed color range:
-    y = np.array(venue_visit)
-    color=np.array(['rgb(255,255,255)']*y.shape[0])
-    for i in range(y.shape[0]):
-        if y[i] < 10: color[i] = 'rgb(166,206,227)'
-        elif y[i] >= 10 and y[i] < 100: color[i] = 'rgb(31,120,180)'
-        elif y[i] >= 100 and y[i] < 200: color[i] = 'rgb(178,223,138)'
-        elif y[i] >= 200 and y[i] < 400: color[i] = 'rgb(51,160,44)'
-        elif y[i] >= 400 and y[i] < 800: color[i] = 'rgb(251,154,153)'
-        else: color[i] = 'rgb(227,26,28)'
-
     return go.Figure(
         data=[
             Scattermapbox(
@@ -127,12 +116,11 @@ def update_graph(interval):
                 marker=dict(
                     size=8,
                     #color="#ffa0a0"
-		   # color = venue_visit,
-		    color = color.tolist(),
-#		    colorbar=dict(
- #             	  	title='Colorbar'
-  #         	    ),
-#	            colorscale = [[0, 'rgb(166,206,227)'], [0.25, 'rgb(31,120,180)'], [0.45, 'rgb(178,223,138)'], [0.65, 'rgb(51,160,44)'], [0.85, 'rgb(251,154,153)'], [1, 'rgb(227,26,28)']],
+		    color = venue_visit,
+		    colorbar=dict(
+              	  	title='Colorbar'
+           	    ),
+	            colorscale = [[0, 'rgb(166,206,227)'], [0.25, 'rgb(31,120,180)'], [0.45, 'rgb(178,223,138)'], [0.65, 'rgb(51,160,44)'], [0.85, 'rgb(251,154,153)'], [1, 'rgb(227,26,28)']],
 		   # colorscale='Jet',
 		),
             ),
